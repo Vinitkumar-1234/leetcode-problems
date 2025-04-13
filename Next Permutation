@@ -1,0 +1,24 @@
+class Solution:
+    def nextPermutation(self, nums: List[int]) -> None:
+        n = len(nums)
+        p = -1
+
+        # Step 1: Find the pivot
+        for i in range(n - 2, -1, -1):
+            if nums[i] < nums[i + 1]:
+                p = i
+                break
+
+        # Step 2: Reverse if no pivot
+        if p == -1:
+            nums.reverse()
+            return
+
+        # Step 3: Find the element just larger than nums[p]
+        for i in range(n - 1, p, -1):
+            if nums[i] > nums[p]:
+                nums[i], nums[p] = nums[p], nums[i]
+                break
+
+        # Step 4: Reverse the suffix
+        nums[p + 1:] = reversed(nums[p + 1:])
