@@ -1,0 +1,32 @@
+class Solution:
+    def totalNQueens(self, n: int) -> int:
+        col = set()  
+        p = set()
+        neg = set()   
+        res = 0       
+        board = [["."] * n for i in range(n)]  
+        
+        def bt(r):
+            nonlocal res 
+            if r == n:  
+                res += 1
+                return
+
+            for c in range(n):
+        
+                if c in col or (r+c) in p or (r-c) in neg:
+                    continue
+                
+                col.add(c)
+                p.add(r+c)
+                neg.add(r-c)
+                board[r][c] = 'Q'
+
+                bt(r+1)
+
+                col.remove(c)
+                p.remove(r+c)
+                neg.remove(r-c)
+                board[r][c] = '.'     
+        bt(0)  
+        return res
