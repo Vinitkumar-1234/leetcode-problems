@@ -1,0 +1,33 @@
+class Solution:
+    def fullJustify(self, words: List[str], maxWidth: int) -> List[str]:
+        q = deque(words)
+
+        res = []
+        i = 0
+        while i < len(words):
+            line, count = [], 0
+            while i < len(words):
+                if count + len(line) + len(words[i]) > maxWidth:
+                    break
+                count += len(words[i])
+                line.append(words[i])
+                i += 1
+            
+            num_spaces = maxWidth - count
+            even_spaces = num_spaces // (len(line) - 1) if len(line) > 1 else num_spaces
+            extra_left_spaces = num_spaces % (len(line) - 1) if len(line) > 1 else 0
+
+            line_str = line[0] if len(line) > 1 else line[0] + " " * num_spaces
+            if len(line) > 1:
+                for j in range(1, len(line)):
+                    if i < len(words) and j - 1 < extra_left_spaces:
+                        line_str += " "
+                    line_str += (" " * (even_spaces if i < len(words) else 1))
+                    line_str += line[j]
+                
+                if i >= len(words):
+                    line_str += " " * (maxWidth - len(line_str))
+   
+            res.append(line_str)
+        
+        return res
