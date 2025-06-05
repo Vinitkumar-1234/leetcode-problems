@@ -1,0 +1,21 @@
+class Solution:
+    def inorder(self, root: Optional[TreeNode], nodes: List[TreeNode]) -> None:
+        if root is None:
+            return
+        self.inorder(root.left, nodes)
+        nodes.append(root)
+        self.inorder(root.right, nodes)
+    def recoverTree(self, root: Optional[TreeNode]) -> None:
+        nodes = []
+        self.inorder(root, nodes)
+        v1 = None
+        v2 = None
+        for i in range(len(nodes) - 1):
+            if nodes[i].val > nodes[i + 1].val:
+                if v1 is None:
+                    v1 = nodes[i]
+                    v2 = nodes[i + 1]
+                else:
+                    v2 = nodes[i + 1]
+                    break
+        v1.val, v2.val = v2.val, v1.val
