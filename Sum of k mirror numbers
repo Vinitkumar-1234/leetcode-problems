@@ -1,0 +1,21 @@
+class Solution:
+
+    def kMirror(self, k: int, n: int) -> int:
+
+        def convertToK(val): return ('' if val == 0 else convertToK(val // k) + "0123456789"[val % k]) or '0'
+        def isPalindrome(val): return not(any(val[i] != val[len(val)-1-i] for i in range(len(val)//2)))
+
+        res = [i for i in range(1, 10) if isPalindrome(convertToK(i)[1:])]
+        targetLen = 2
+        cur = 0
+        strCur = "0"
+        while (len(res) < n):
+            upLength = len(str(cur)) != len(str(cur+1))
+            targetLen += upLength
+            cur = 10**((targetLen)//2-1) if (upLength) else cur + 1
+            strCur = str(cur)
+            revStrCur = strCur[::-1]
+            listT = list(range(10)) if (targetLen % 2 == 1) else [""]
+            newList = [int(strCur + str(t) + revStrCur) for t in listT if isPalindrome(convertToK(int(strCur + str(t) + revStrCur))[1:])]
+            res += newList
+        return sum(res[:n])
