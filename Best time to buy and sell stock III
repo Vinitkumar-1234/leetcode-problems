@@ -1,0 +1,38 @@
+class Solution:
+    def maxDif(prices):
+        #initiated indices for buy/sell prices of max profit
+        maxx = [0, 0]
+        low = 0 #tracking lowest number found
+        for i in range(1, len(prices)):
+            if prices[i] < prices[low]:
+                low = i
+            else:
+                if prices[i] - prices[low] > prices[maxx[1]] - prices[maxx[0]]:
+                    maxx = [low, i]
+        return maxx
+        
+    def maxProfit(self, prices: List[int]) -> int:
+        #Indices of prices for max profit in one trade
+        maxDif = Solution.maxDif(prices)
+
+        #slicing the part of max profit (middle array)
+        mArr = prices[maxDif[0]: maxDif[1] + 1]
+        lArr = prices[0:maxDif[0]] #left side (left array)
+        rArr = prices[maxDif[1] + 1: len(prices)+1] #right side (right array)
+
+        #max profit on middle array
+        maxHighM = prices[maxDif[1]] - prices[maxDif[0]]
+
+        #max price drop on middle array (Ind = indices)
+        maxDropMInd = Solution.maxDif([x*(-1) for x in mArr])
+        maxDropM = mArr[maxDropMInd[0]] - mArr[maxDropMInd[1]] if mArr else 0
+
+        #max price hike on left array
+        maxHighLInd = Solution.maxDif(lArr)
+        maxHighL = lArr[maxHighLInd[1]] - lArr[maxHighLInd[0]] if lArr else 0
+
+        #max price hike on right array
+        maxHighRInd = Solution.maxDif(rArr)
+        maxHighR = rArr[maxHighRInd[1]] - rArr[maxHighRInd[0]] if rArr else 0
+
+        return max(maxHighL, maxDropM, maxHighR) + maxHighM
