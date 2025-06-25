@@ -1,0 +1,19 @@
+
+class Solution:
+    def maxPathSum(self, root: Optional[TreeNode]) -> int:
+        path_sum = float("-inf") 
+        
+        def dfs(root):
+           
+            nonlocal path_sum
+            if root is None:
+                return 0
+            
+            left_sum = max(dfs(root.left), 0)
+            right_sum = max(dfs(root.right), 0)
+            current_path_sum = root.val+left_sum+right_sum
+            path_sum = max(path_sum, current_path_sum)
+            return root.val+max(left_sum, right_sum)
+        
+        dfs(root)
+        return path_sum
