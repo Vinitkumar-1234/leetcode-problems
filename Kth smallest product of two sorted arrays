@@ -1,0 +1,36 @@
+import bisect
+
+class Solution:
+    def kthSmallestProduct(self, nums1: List[int], nums2: List[int], k: int) -> int:
+
+        def F(X):
+            """
+            Counts how many products nums1[i]*nums2[j] are ≤ X
+            """
+            count = 0
+            for num in nums1:
+                if num > 0:
+                    val = X / num
+                    count += bisect.bisect_right(nums2, val)
+                elif num < 0:
+                    val = X / num
+                    count += len(nums2) - bisect.bisect_left(nums2, val)
+                else:
+                    if X >= 0:
+                        count += len(nums2)
+                    
+            return count
+
+        left = -10**10
+        right = 10**10
+
+
+        while left <= right:
+            mid = (left + right) // 2
+            cnt = F(mid)
+            if cnt < k:
+                left = mid + 1
+            else:
+                right = mid - 1
+
+        return left
