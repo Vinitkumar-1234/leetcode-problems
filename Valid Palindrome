@@ -1,0 +1,5 @@
+class Solution:
+    def isPalindrome(self, s: str) -> bool:
+        valid = set("abcdefghijklmnopqrstuvwxyz0123456789")
+        filtered = [ch for ch in s.lower() if ch in valid]
+        return filtered == filtered[::-1]
