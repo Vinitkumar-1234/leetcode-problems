@@ -1,0 +1,10 @@
+# Read from the file words.txt and output the word frequency list to stdout.
+declare -A freq
+while read line; do
+  for word in $line; do
+    ((freq[$word]+=1))
+  done
+done < words.txt
+for key in ${!freq[@]}; do
+  echo $key ${freq[$key]}
+done | sort -rnk2
