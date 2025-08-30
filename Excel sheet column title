@@ -1,0 +1,19 @@
+class Solution:
+    def convertToTitle(self, columnNumber: int) -> str:
+# Please upvote my solution if you find it helpful
+        import string
+        def ansGiver(c):
+            if c <= 26:
+                return D[c]
+            if c%26 != 0:
+                return ansGiver(c//26) + D[c%26]
+            else:
+                return ansGiver(c//26 - 1) + D[26]
+                # by this way, 52 will be AZ not BZ or any error
+        Upper = string.ascii_uppercase
+        D = {}
+        for i in range(1,27):
+            D[i] = Upper[i-1]
+        c = columnNumber
+        # now if c is not divisible by 26 one case, if it is divisible by 26 another case
+        return ansGiver(c)
